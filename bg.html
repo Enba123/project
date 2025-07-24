@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Application Form</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ✅ Static transparent watermark */
+    .background-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 6em;
+      color: rgba(255, 255, 255, 0.05);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    form {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      width: 400px;
+      max-width: 90vw;
+      position: relative;
+      z-index: 1;
+    }
+
+    #formHeader {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #formHeader h2 {
+      margin: 0;
+      font-size: 1.8em;
+      color: #2575fc;
+    }
+
+    fieldset {
+      display: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    fieldset.active {
+      display: block;
+    }
+
+    legend {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-size: 1em;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      margin-right: 10px;
+      background-color: #2575fc;
+      border: none;
+      color: white;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-family: inherit;
+    }
+
+    button:hover {
+      background-color: #1a54c9;
+    }
+
+    #confirmationMessage {
+      text-align: center;
+      font-size: 1.2em;
+      color: green;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Background Watermark Text -->
+  <div class="background-text">EC Technical Solutions</div>
+
+  <form id="jobForm" action="#" method="post" enctype="multipart/form-data">
+
+    <!-- ✅ Header -->
+    <div id="formHeader">
+      <h2>EC Technical Solutions</h2>
+    </div>
+
+    <!-- Step 1: Personal Information -->
+    <fieldset id="personalInfo" class="active">
+      <legend>Personal Information</legend>
+
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" name="firstName" required>
+
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" name="lastName" required>
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone:</label>
+      <input type="tel" id="phone" name="phone">
+
+      <label for="permanentAddress">Permanent Address:</label>
+      <input type="text" id="permanentAddress" name="permanentAddress">
+
+      <label for="currentAddress">Current Address:</label>
+      <input type="text" id="currentAddress" name="currentAddress">
+
+      <button type="button" id="nextBtn">Next</button>
+    </fieldset>
+
+    <!-- Step 2: Application Details -->
+    <fieldset id="applicationDetails">
+      <legend>Application Details</legend>
+
+      <label for="resume">Upload Resume:</label>
+      <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+
+      <label for="coverLetter">Cover Letter (optional):</label>
+      <textarea id="coverLetter" name="coverLetter" rows="4"></textarea>
+
+      <label for="availability">Availability:</label>
+      <select id="availability" name="availability">
+        <option value="full-time">Full-time</option>
+        <option value="part-time">Part-time</option>
+        <option value="contract">Contract</option>
+      </select>
+
+      <!-- ✅ Internship Certificate Upload (Optional) -->
+      <label for="internshipCert">Upload Internship Certification (optional):</label>
+      <input type="file" id="internshipCert" name="internshipCert" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+
+      <button type="button" id="backBtn">Back</button>
+      <button type="submit">Apply</button>
+    </fieldset>
+
+    <!-- Step 3: Confirmation Page -->
+    <fieldset id="confirmationPage">
+      <legend>Success</legend>
+      <div id="confirmationMessage">
+        🎉 Your application has been <strong>registered successfully!</strong>
+      </div>
+    </fieldset>
+
+  </form>
+
+  <script>
+    const personalInfo = document.getElementById('personalInfo');
+    const applicationDetails = document.getElementById('applicationDetails');
+    const confirmationPage = document.getElementById('confirmationPage');
+    const formHeader = document.getElementById('formHeader');
+
+    const nextBtn = document.getElementById('nextBtn');
+    const backBtn = document.getElementById('backBtn');
+    const jobForm = document.getElementById('jobForm');
+
+    nextBtn.addEventListener('click', () => {
+      const inputs = personalInfo.querySelectorAll('input');
+      let valid = true;
+
+      inputs.forEach(input => {
+        if (!input.checkValidity()) {
+          input.reportValidity();
+          valid = false;
+          return;
+        }
+      });
+
+      if (valid) {
+        personalInfo.classList.remove('active');
+        applicationDetails.classList.add('active');
+      }
+    });
+
+    backBtn.addEventListener('click', () => {
+      applicationDetails.classList.remove('active');
+      personalInfo.classList.add('active');
+    });
+
+    jobForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const resumeInput = document.getElementById('resume');
+      if (!resumeInput.files.length) {
+        resumeInput.setCustomValidity("Please upload your resume.");
+        resumeInput.reportValidity();
+        return;
+      } else {
+        resumeInput.setCustomValidity("");
+      }
+
+      applicationDetails.classList.remove('active');
+      confirmationPage.classList.add('active');
+      formHeader.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>
